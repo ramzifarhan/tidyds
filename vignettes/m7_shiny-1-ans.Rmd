@@ -27,7 +27,7 @@ Pada pelatihan ini kita akan mencoba membuat ulang dan memodifikasi aplikasi web
 
 **`global`**
 
-Pada *chunk* pertama ini Anda diminta untuk mengaktifkan paket-paket yang diperlukan sehingga aplikasi web dapat berjalan dengan baik. Paket yang kita perlukan adalah `shiny`, `here`, `vroom`, `dplyr`, dan `ggplot`, dan `plotly`. Selain itu, Anda juga diminta untuk mengimpor berkas "udara_bandung.csv" yang berada dalam subdirektori "data-raw" sebagai obyek R bernama `udara_bandung`. `udara_bandung` akan menjadi obyek global yang nanti akan dipergunakan oleh aplikasi web.
+Pada *chunk* pertama ini Anda diminta untuk mengaktifkan paket-paket yang diperlukan sehingga aplikasi web dapat berjalan dengan baik. Paket yang kita perlukan adalah `shiny`, `here`, `vroom`, `dplyr`, dan `ggplot2`, dan `plotly`. Selain itu, Anda juga diminta untuk mengimpor berkas "udara_bandung.csv" yang berada dalam subdirektori "data-raw" sebagai obyek R bernama `udara_bandung`. `udara_bandung` akan menjadi obyek global yang nanti akan dipergunakan oleh aplikasi web.
 Selanjutnya kita akan membuat dua obyek global lain yaitu `option_station` dan `option_parameter`.
 
 ```{r global}
@@ -45,7 +45,7 @@ option_parameter <- colnames(udara_bandung)[-c(1, 2)]
 
 **`ui`**
 
-Berikutnya kita akan menuliskan kode antarmuka (*front-end*/*user interface*) pada *chunk* ini. Terdapat berbagai jenis tata letak laman antarmuka yang disediakan oleh paket `shiny` maupun oleh paket tambahan lainnya. Dalam kasus ini kita akan menggunakan `fluidPage()` dan `sidebarLayout()` untuk mengatur tata letak laman aplikasi web. Berilah judul yang sesuai pada `headerPanel()`. Selanjutnya tambahkanlah satu `selectInput()` dengan argumen `inputId = "parameter"`, `label = "Parameter"`, dan `choices = option_parameter`. Serta tambahkan `plotlyOutput()` pada `mainPanel()` dengan `outputId = "aq_plot"` sebagai argumen! Dapatkah Anda membuat satu `textInput()` tambahan yang berfungsi untuk mengatur judul pada grafik?
+Berikutnya kita akan menuliskan kode antarmuka (*front-end*/*user interface*) pada *chunk* ini. Terdapat berbagai jenis tata letak laman antarmuka yang disediakan oleh paket `shiny` maupun oleh paket tambahan lainnya. Dalam kasus ini kita akan menggunakan `fluidPage()` dan `sidebarLayout()` untuk mengatur tata letak laman aplikasi web. Berilah judul yang sesuai pada `headerPanel()`. Selanjutnya tambahkanlah satu `selectInput()` dengan argumen `inputId = "parameter"`, `label = "Parameter"`, dan `choices = option_parameter`. Dapatkah Anda membuat satu `textInput()` tambahan yang berfungsi untuk mengatur judul pada grafik? Serta tambahkan `plotlyOutput()` pada `mainPanel()` dengan `outputId = "aq_plot"` sebagai argumen! 
 
 ```{r ui}
 ui <- fluidPage(
