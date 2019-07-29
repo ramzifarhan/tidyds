@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
+
 # Fundamental Tidy Data Science in R
 
 ## Prosedur
@@ -35,19 +36,17 @@ git config --global user.name "Nama Anda"
 
 ## Persiapan
 
-Jalankan baris kode berikut untuk mempersiapkan paket-paket yang akan digunakan selama pelatihan:
+Jalankan baris kode berikut untuk memasang paket-paket yang akan digunakan selama pelatihan:
 
 ```{r, eval=FALSE}
 install.packages("devtools")
 devtools::install_deps()
+```
+
+Jalankan baris kode berikut untuk memeriksa apakah semua kebutuhan paket sudah terpasang:
+
+```{r, eval=FALSE}
 devtools::load_all()
 tidyds::check_deps()
 ```
 
-## Struktur direktori
-
-Repositori ini tersusun atas subdirektori, berkas, dan dokumen sebagai berikut:
-
-```{bash, echo = FALSE}
-tree
-```
