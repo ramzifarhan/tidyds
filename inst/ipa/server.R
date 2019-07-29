@@ -10,28 +10,28 @@ server <- function(input, output, session) {
       stringsAsFactors = FALSE
     )
   })
-
+  
   to_predict <- reactive({
     req(un_smp_new())
-    un_smp_recipe %>%
-      prep() %>%
+    un_smp_recipe %>% 
+      prep() %>% 
       bake(un_smp_new())
   })
-
+  
   ipa_prediction <- reactive({
     req(to_predict())
-    predict(un_smp_lm, new_data = to_predict())
+    predict(un_smp_rf, new_data = to_predict())
   })
-
+  
   output$ipa_prediction <- renderUI({
     wellPanel(
       h4("Prediksi nilai ujian IPA kamu:"),
       h1(strong(round(ipa_prediction(), digits = 2))),
-      h2(ifelse(ipa_prediction() >= 75,
-                "Selamat ya, calon jadi Data Scientist nih! ;)",
+      h2(ifelse(ipa_prediction() >= 75, 
+                "Selamat ya, calon Data Scientist nih! ;)",
                 "Tetap semangat ya! Ikut belajar di R Academy Batch selanjutnya yuk ;)")),
       hr(),
-      em("Maaf ya saya bukan peramal, hanya seorang data scientist pengguna metode pemdelan Random Forest", icon("smile"))
+      em("Maaf ya saya bukan peramal, hanya seorang data scientist pengguna metode pemodelan Random Forest", icon("smile"))
     )
   })
 }
