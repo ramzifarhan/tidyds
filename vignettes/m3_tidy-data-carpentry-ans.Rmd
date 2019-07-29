@@ -30,38 +30,39 @@ Anda diminta untuk melakukan identifikasi karakteristik dari dataset-dataset yan
 table1
 ```
 
-`table1` termasuk/tidak termasuk "Tidy data" karena ...
+`table1` termasuk "Tidy data" karena memenuhi tiga ciri yaitu:, 1). Setiap variabel disimpan dalam masing-masing kolom berbeda; 2). Setiap observasi dinyatakan dalam satu baris; dan 3). Nilai dalam *cell* adalah unik untuk setiap kombinasi observasi dan variabel.
 
 ```{r}
 table2
 ```
 
-`table2` termasuk/tidak termasuk "Tidy data" karena ...
+`table2` tidak termasuk "Tidy data" karena beberapa variabel pengamatan disimpan dalam satu kolom dengan cara ditumpuk.
 
 ```{r}
 table3
 ```
 
-`table3` termasuk/tidak termasuk "Tidy data" karena ...
+`table3` tidak termasuk "Tidy data" karena nilai dari beberapa variabel pengamatan disimpan dalam satu kolom dengan cara "ditempel".
 
 
 ```{r}
 table4a
 ```
 
-`table4a` termasuk/tidak termasuk "Tidy data" karena ...
+`table4a` tidak termasuk "Tidy data" karena nilai observasi dari variabel yang sama disimpan ke dalam kolom berbeda. Sehingga informasi data menjadi tidak jelas dan sulit dipahami secara langsung.
 
 ```{r}
 table4b
 ```
 
-`table4b` termasuk/tidak termasuk "Tidy data" karena ...
+`table4b` tidak termasuk "Tidy data" karena nilai observasi dari variabel yang sama disimpan ke dalam kolom berbeda. Sehingga informasi data menjadi tidak jelas dan sulit dipahami secara langsung.
+
 
 ```{r}
 table5
 ```
 
-`table5` termasuk/tidak termasuk "Tidy data" karena ...
+`table5` tidak termasuk "Tidy data" karena nilai dari beberapa variabel pengamatan disimpan dalam satu kolom dengan cara "ditempel". Selain itu jenis data pada beberapa kolom tidak sesuai dengan "sifat" aslinya.
 
 ## Mempersiapkan tidy data
 
