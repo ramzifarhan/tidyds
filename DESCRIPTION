@@ -18,6 +18,7 @@ Imports:
     janitor,
     magrittr,
     parsnip,
+    plotly,
     readr,
     readxl,
     recipes,
