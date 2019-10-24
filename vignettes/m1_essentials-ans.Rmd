@@ -24,14 +24,14 @@ Di dokumen R Markdown Anda dapat melakukan pengaturan teks dengan menggunakan Ma
 2. *Kalimat ini dicetak miring*
 3. [Kalimat ini berisi tautan](https://www.markdownguide.org/getting-started)
 
-Seperti disebutkan sebelumnya bahwa Anda juga dapat menuliskan kode pemrograman di dokumen R Markdown. Namun untuk membedakan antara teks biasa dengan kode pemrograman diperlukan suatu blok yang disebut dengan *chunk* (di Jupyter Notebook disebut sebagai *cell*). Suatu *chunk* ditandai dengan adanya tiga *backtics* "`" pada awal dan akhir baris kode pemrograman seperti contoh berikut:
+Seperti disebutkan sebelumnya bahwa Anda juga dapat menuliskan kode pemrograman di dokumen R Markdown. Namun untuk membedakan antara teks biasa dengan kode pemrograman diperlukan suatu blok yang disebut dengan *chunk* (di Jupyter Notebook disebut sebagai *cell*). Suatu *chunk* ditandai dengan adanya tiga *backticks* "`" pada awal dan akhir baris kode pemrograman seperti contoh berikut:
 
 ```
 tulis kode pemrograman
 pada bagian ini
 ```
 
-Selanjutnya untuk menegaskan bahasa pemrograman apa yang digunakan dan akan dieksekusidalam suatu *chunk*, Anda dapat menambahkan penanda "{bahasa_pemrograman}" tepat setelah penanda *backtics* di awal *chunk*. R Markdown mendukung dan dapat mengeksekusi beberapa jenis bahasa pemrograman selain R, misalnya Python, Julia, C, Fortran, SQL, dan Shell script. Dalam contoh berikut menunjukan penggunaan bahasa pemrograman R di dalam suatu *chunk*:
+Selanjutnya untuk menegaskan bahasa pemrograman apa yang digunakan dan akan dieksekusidalam suatu *chunk*, Anda dapat menambahkan penanda "{bahasa_pemrograman}" tepat setelah penanda *backticks* di awal *chunk*. R Markdown mendukung dan dapat mengeksekusi beberapa jenis bahasa pemrograman selain R, misalnya Python, Julia, C, Fortran, SQL, dan Shell script. Dalam contoh berikut menunjukan penggunaan bahasa pemrograman R di dalam suatu *chunk*:
 
 ```{r}
 head(mtcars) # melihat 6 baris pertama dari data mtcars, mtcars adalah data bawaan yang tersedia di R

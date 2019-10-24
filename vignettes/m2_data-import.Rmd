@@ -179,7 +179,7 @@ roster_raw1$___
 roster_raw1$___
 ```
 
-Jika Anda perhatikan, pada nama kolom yang Anda tulis secara otomatis oleh RStudio akan ditambahkan dua tanda *backtics* di awal dan akhir. Cobalah Anda hapus tanda tersebut dan jalankan ulang baris kode di atas. Dapatkah Anda menjelaskan apa yang terjadi? (Petunjuk: `?make.names`)
+Jika Anda perhatikan, pada nama kolom yang Anda tulis secara otomatis oleh RStudio akan ditambahkan dua tanda *backticks* di awal dan akhir. Cobalah Anda hapus tanda tersebut dan jalankan ulang baris kode di atas. Dapatkah Anda menjelaskan apa yang terjadi? (Petunjuk: `?make.names`)
 
 Anda dapat menyelesaikan permasalahan di atas dengan menggunakan paket `janitor`. Sebagai contoh kita akan mengimpor ulang "roster.xlss" menjadi obyek R bernama `roster_raw`. Ada dua cara yang dapat dilakukan, berikut merupakan cara pertama:
 
