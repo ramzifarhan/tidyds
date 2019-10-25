@@ -25,11 +25,14 @@ Di dokumen R Markdown Anda dapat melakukan pengaturan teks dengan menggunakan Ma
 3. Kalimat ini berisi tautan https://www.markdownguide.org/getting-started
 
 Seperti disebutkan sebelumnya bahwa Anda juga dapat menuliskan kode pemrograman di dokumen R Markdown. Namun untuk membedakan antara teks biasa dengan kode pemrograman diperlukan suatu blok yang disebut dengan *chunk* (di Jupyter Notebook disebut sebagai *cell*). Suatu *chunk* ditandai dengan adanya tiga *backticks* "`" pada awal dan akhir baris kode pemrograman seperti contoh berikut:
+```{r}
+```
 
-```
-tulis kode pemrograman
-pada bagian ini
-```
+
+**kalimat ini dicetak tebal**
+*kalimat ini dicetak miring*
+kalimat ini berisi [tautan](https://www.markdownguide.org/getting-started)
+
 
 Selanjutnya untuk menegaskan bahasa pemrograman apa yang digunakan dan akan dieksekusidalam suatu *chunk*, Anda dapat menambahkan penanda "{bahasa_pemrograman}" tepat setelah penanda *backticks* di awal *chunk*. R Markdown mendukung dan dapat mengeksekusi beberapa jenis bahasa pemrograman selain R, misalnya Python, Julia, C, Fortran, SQL, dan Shell script. Dalam contoh berikut menunjukan penggunaan bahasa pemrograman R di dalam suatu *chunk*:
 
@@ -39,6 +42,12 @@ summary(mtcars) # melihat rigkasan statustik dari data data mtcars
 ```
 
 Kombinasi "Ctrl + Alt + I" dapat Anda gunakan untuk membuah *chunk* dengan bahasa pemrograman R. Buatlah *chunk* baru berisi kode pemrograman R sebagai berikut!
+```{r}
+filled.contour(volcano,
+               color.palette = terrain.colors, 
+               plot.title = title("Topografi Gunung Maunga Whau"), 
+               key.title = title("Tinggi\n(meter)"))
+```
 
 filled.contour(volcano,
                color.palette = terrain.colors, 
@@ -55,7 +64,7 @@ Kemudian bagaimana cara mengatur dan memproduksi dokumen final tersebut? Caranya
 
 Jalankanlah kode dalam *chunk* berikut:
 ```{r}
-"Halo, nama saya adalah ..." # isi dengan nama Anda
+"Halo, nama saya adalah muhammad ramzi farhan" # isi dengan nama Anda
 ```
 
 Saat Anda menjalankan *chunk* di atas, R akan mengevaluasi dan melakukan eksekusi pada baris kode yang dituliskan. Dalam contoh di atas, keluaran dari eksekusi baris kode adalah kalimat "Halo, nama saya adalah (nama Anda)" yang tercetak di dokumen R Markdown atau konsol RStudio. Mengapa kalimat "# isi dengan nama Anda" tidak ikut tercetak?
@@ -78,7 +87,7 @@ list(15, "r", "TRUE", 24L)
 Saat Anda mengeksekusi *chunk* di atas, keluaran dari kode yang Anda eksekusi hanya tercetak pada layar. Anda dapat "menyimpan" keluaran dari kode menjadi sebuah obyek R dengan menggunakan tanda `<-` dengan format "nama_obyek <- kode_yang_dieksekusi". Buatlah *vector* berupa huruf-huruf vokal dan simpanlah hasilnya dalam obyek R dengan nama `huruf_vokal`! Isilah "___" dengan jawaban yang sesuai!
 
 ```{r}
-___ <- c("a", ___, "u", ___, "o") # objek data tersimpan dengan nama 'huruf_vokal', namun tidak tercetak pada layar
+(huruf_vokal <- c("a", "i", "u", "e", "o")) # objek data tersimpan dengan nama 'huruf_vokal', namun tidak tercetak pada layar
 huruf_vokal # mencetak objek data dengan nama 'huruf_vokal' pada layar (Anda juga dapat menuliskannya sebagai "print(huruf_vokal)")
 ```
 
@@ -94,14 +103,18 @@ typeof(TRUE)
 Dapatkah Anda mengetahui *type* dari `huruf_vokal` yang telah Anda buat diatas?
 
 ```{r}
-___(huruf_vokal)
+typeof(huruf_vokal)
 ```
 
 Apa yang terjadi jika Anda obyek menggunakan fungsi `c()` namun setiap elemen dari obyek tersebut memiliki *type* yang berbeda? Dapatkah Anda memberikan penjelasan?
 
 ```{r}
-beragam <- c("Semangat belajar!", 77.6, 16L, TRUE)
+(beragam <-list("Semangat belajar!", 77.6, 16L, TRUE))
 beragam
+typeof(beragam)
+```
+
+```{r}
 typeof(beragam)
 ```
 
@@ -126,34 +139,38 @@ Sekarang cobalah lakukan operasi artimatika sama seperti pada *chunk* di atas un
 ```{r}
 x <- c(34, 86, 98, 23, 66)
 y <- c(5, 6, 2, 8, 4)
+x
+y
 x + y
-___
-___
-___
-___
-___
-___
+x-y
+x*y
+x/y
+x%%y
+x %/% y
 ```
 
 
 ## Fungsi
 Fungsi memiliki tugas utama untuk mengolah suatu *input* menjadi *output*. Anda dapat melihat dan membaca dokumentasi dari suatu fungsi dengan menjalankan `?nama_fungsi` atau `help(nama_fungsi)`. Di bawah ini merupakan beberapa fungsi dasar yang dapat Anda gunakan untuk mengolah obyek bernama `iris` sebagai *input*. Buatlah catatan singkat mengenai kegunaan dari setiap fungsi yang digunakan!
+```{r}
+'help(?iris_fungsi)'
+```
 
 ```{r}
 iris # mencetak data pada layar
-?iris # ___
-dim(iris) # ___
-str(iris) # ___
-colnames(iris) # ___
-head(iris) # ___
-head(iris, 10) # ___
-tail(iris) # ___
-tail(iris, 10) # ___
-summary(iris) # ___
-iris[1, ] # ___
-iris[c(1, 6, 12),] # ___
-iris[ ,2] # ___
-iris[2,2] # ___
+?iris # mambaca dokumentasi data
+dim(iris) # mengecek dimensi data, baris dan kolom
+str(iris) # melihat struktur data
+colnames(iris) # melihat nama kolom
+head(iris) # melihat 6 baris pertama
+head(iris, 10) # mencetak 10 baris pertama
+tail(iris) # melihat 6 baris terakhir
+tail(iris, 10) # melihat 10 baris terakhir
+summary(iris) # melihat  kesimpulan data
+iris[1, ] # mengambil 1 baris pertama dari semua kolom
+iris[c(1, 6, 12),] #mengambil baris 1,6,12
+iris[ ,2, drop = FALSE]
+iris[2,2] #
 iris$Sepal.Length # ___
 class(iris$Species) # ___
 length(iris$Petal.Width) # m___
@@ -178,10 +195,11 @@ Meskipun R telah memiliki banyak fungsi bawaan dan sangat bermanfaat, tidak jara
 
 Anda dapat memasang paket yang berasal dari CRAN dengan menggunakan fungsi `install.packages("nama_paket")`. Pada RStudio Anda juga dapat melakukan hal tersebut melalui menu "Tools-Install Packages". Sekarang cobalah pasang paket "tidyverse", "tidymodels", dan "tidytext"! (Catatan: jika Anda menuliskan fungsi untuk memasang paket di dalam *chunk* R Markdown maka jangan lupa tambahkan argumen `eval = FALSE` di awal *chunk*)
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 install.packages("tidyverse")
-___
-___
+install.packages("tidymodels")
+install.packages("tidytext")
+install.packages("devtools")
 ```
 
 Sedangkan untuk paket yang berasal dari GitHub dan Bioconductor dapat dipasang menggunakan fungsi `remotes::install_github("user/repo")` serta `remotes::install_bioc("repo")`. (Catatan: Anda harus memasang paket `remotes` terlebih dahulu)
