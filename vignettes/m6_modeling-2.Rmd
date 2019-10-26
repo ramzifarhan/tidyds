@@ -19,26 +19,33 @@ Anda mungkin sudah terbiasa membaca narasi teks, seperti artikel, cerita pendek,
 Dalam studi kasus ini kita akan melakukan pemodelan topic (*topic modeling*) untuk mengkategorikan topik dari buku cerita. Kita akan menggunakan beberapa paket untuk melakukan hal tersebut, diantaranya adalah `tidytext` dan `topicmodels`. Selain kedua paket tersebut aktifkanlah juga paket `vroom`, `here`, `dplyr`, dan `ggplot2`!
 
 ```{r}
-___
-___
-___
-___
-___
-___
+library(tidytext)
+library(topicmodels)
+library(vroom)
+library(here)
+library(dplyr)
+library(ggplot2)
 ```
 
 Pada subdirektori "data-raw" terdapat berkas bernama "sherlock.csv". Imporlah berkas tersebut menjadi obyek R bernama `sherlock`. Ya! Kita akan melakukan pengkategorian topik buku "The Adventures of Sherlock Holmes" karya Arthur Conan Doyle. Apakah Anda tertarik? Jangan lupa untuk melakukan inspeksi terhadap data `sherlock` tersebut.
 
 ```{r}
-sherlock <- vroom(here("data-raw", "___"))
-___
+sherlock <- vroom(here("data-raw", "sherlock.csv"))
+sherlock
+
+glimpse(sherlock)
+sherlock
 ```
 
 Data `sherlock` tersebut berisi kolom "story" yang merupakan subcerita dari cerita keseluruhan dan kolom "text" yang merupakan naskah cerita pada setiap baris.
 Sekarang kita akan melakukan transformasi data untuk mencatat kata apa saja yang muncul untuk setiap subcerita. Jalankan *chunk* berikut dan simpanlah hasilnya sebagai obyek R bernama `sherlock_tidy`! 
 
+unnest tokens menghapus tanda baca yang ada.
+stop words itu kata-kata yang tak umum
+anti join, mencari kata, lalu jka ada index yg tidak sama, akan dihapus
+
 ```{r}
-___ <- sherlock %>% 
+sherlock_tidy <- sherlock %>% 
   filter(!is.na(text)) %>% 
   group_by(story) %>%
   unnest_tokens(word, text) %>%
@@ -54,13 +61,16 @@ Anda dapat menghitung frekuensi penggunaan kata untuk setiap subcerita dengan me
 
 ```{r}
 sherlock_tidy %>% 
-  count(story, word, ___)
+  count(story, word,sort = TRUE)
 ```
 
 Selanjutnya Anda dapat dapat mengetahui kata penting apa yang terdapat dapat suatu subcerita dengan menggunakan analisis Term Frequency - Inverse Document Frequency (tf-idf). Fungsi `bind_tf_idf()` dapat dimanfaatkan untuk melakukan hal tersebut. Simpanlah hasil keluaran fungsi tersebut dalam obyek bernama `sherlock_tfidf` dan cetaklah hasilnya pada layar!
 
+
+idf = parameter lintas topik
+
 ```{r}
-___ <- sherlock_tidy %>% 
+sherlock_tfidf <- sherlock_tidy %>% 
   count(story, word, sort = TRUE) %>% 
   bind_tf_idf(word, story, n)
 
@@ -68,6 +78,8 @@ sherlock_tfidf
 ```
 
 `sherlock_tfidf` tersebut akan lebih mudah dicerna jika ditampilkan dalam bentuk grafik. Pada *chunk* berikut kita akan memvisualisasikan data tersebut dengan menampilkan 15 kata terpenting untuk sucerita "ADVENTURE I. A SCANDAL IN BOHEMIA"
+
+15 baris pertama berdasarkan tf idf terbesar
 
 ```{r}
 sherlock_tfidf %>% 
@@ -88,12 +100,36 @@ sherlock_tfidf %>%
 Pilihlah dua subcerita lain dan buatlah grafik serupa!
 
 ```{r}
-
+sherlock_tfidf %>% 
+  filter(story == "VIII. THE ADVENTURE OF THE SPECKLED BAND") %>% 
+  top_n(15, tf_idf) %>% 
+  ggplot(aes(x = reorder(word, tf_idf), y = tf_idf)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "tf-idf",
+    title = "Kata terpenting pada cerita Sherlock Holmes",
+    subtitle = "Subcerita 'VIII. THE ADVENTURE OF THE SPECKLED BAND'"
+  ) +
+  theme_light()
 ```
 
 
 ```{r}
-
+sherlock_tfidf %>% 
+  filter(story == "X. THE ADVENTURE OF THE NOBLE BACHELOR") %>% 
+  top_n(15, tf_idf) %>% 
+  ggplot(aes(x = reorder(word, tf_idf), y = tf_idf)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "tf-idf",
+    title = "Kata terpenting pada cerita Sherlock Holmes",
+    subtitle = "Subcerita 'X. THE ADVENTURE OF THE NOBLE BACHELOR'"
+  ) +
+  theme_light()
 ```
 
 Berdasarkan analisis tf-idf di atas kita dapat melihat bahwa masih banyak kata yang merupakan nama tokoh dalam cerita termasuk dalam kata penting. Apakah sebaiknya kita menghapus kata-kata tersebut terlebih dahulu sebelum melakukan pemodelan topik?
@@ -133,7 +169,7 @@ Anda juga dapat membuat visualisasi untuk `sherlock_gamma` seperti ditunjukan pa
 
 ```{r}
 sherlock_gamma %>% 
-  ggplot(aes(x = rev(story), y = gamma, fill = factor(topic))) +
+  ggplot(aes(x = rev(story), y = gamma, fill = as.character(topic))) +
   geom_col() +
   coord_flip()
 ```
@@ -149,22 +185,39 @@ sherlock_beta <- sherlock_lda %>%
 sherlock_beta
 
 sherlock_beta %>% 
-  group_by(topic) %>% 
+  group_by(topic=3) %>% 
   top_n(10, beta)  
+sherlock_beta
 ```
 
 Dapatkah Anda membuat visualisasi untuk `sherlock_beta`? Buatlah visualisasi untuk setidaknya 3 topik! (Petunjuk: baris kode serupa dengan kode untuk membuat visualisasi `sherlock_tfidf`)
 
 ```{r}
+sherlock_beta %>%
+filter(topic == 1) %>%
+  top_n(10, beta) %>%
+  ggplot(aes(x = reorder(word, beta), y = beta)) +
+  geom_col() +
+  coord_flip()
+```
+
+```{r}
+sherlock_beta %>%
+filter(topic == 2) %>%
+  top_n(10, beta) %>%
+  ggplot(aes(x = reorder(word, beta), y = beta)) +
+  geom_col() +
+  coord_flip()
 
 ```
 
 ```{r}
-
-```
-
-```{r}
-
+sherlock_beta %>%
+filter(topic == 3) %>%
+  top_n(10, beta) %>%
+  ggplot(aes(x = reorder(word, beta), y = beta)) +
+  geom_col() +
+  coord_flip()
 ```
 
 
