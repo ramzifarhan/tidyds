@@ -132,7 +132,8 @@ Mudah sekali bukan? Bagaimana jika Anda ingin menambahkan informasi jumlah peser
 
 ```{r}
 ggplot(un_smp, aes(x = bahasa_indonesia, y = matematika)) +
-  geom_point(aes(colour = status, size = jumlah_peserta))
+  geom_point(aes(colour = status, size = jumlah_peserta)) +
+  scale_size_area()
 ```
 
 Sangat menarik! Nampaknya jumlah peserta ujian juga memiliki hubungan dengan nilai ujian, benarkah? Namun sayang sekali grafik tersebut sekarang telihat sangat "penuh" sehingga sulit membedakan antar titik. Apakah transparasi titik-titik tersebut dapat dimodifikasi? Ya! Anda dapat menambahkan argumen "alpha" (nilai 0 hingga 1) pada obyek geometri yang diinginkan. (Bonus: Apa yang terjadi jika Anda menambahkan argumen "alpha" dalam fungsi `aes()` pada obyek geometri?)
@@ -165,7 +166,7 @@ mtk_vs_ind <- ggplot(un_smp, aes(x = bahasa_indonesia, y = matematika)) +
     subtitle = "Ujian Nasional SMP di Kota Bandung 2015-2019",
     caption = "Sumber: Open Data Kota Bandung"
   ) +
-  theme_light()
+  theme_gray()
 
 mtk_vs_ind
 ```

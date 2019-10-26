@@ -31,16 +31,16 @@ Pada *chunk* pertama ini Anda diminta untuk mengaktifkan paket-paket yang diperl
 Selanjutnya kita akan membuat dua obyek global lain yaitu `option_station` dan `option_parameter`.
 
 ```{r global}
-___
-___
-___
-___
-___
-___
+library(shiny)
+library(here)
+library(vroom)
+library(dplyr)
+library(ggplot2)
+library(plotly)
 
-___ <- vroom(here("data-raw", "___"))
+udara_bandung <- vroom(here("data-raw", "udara_bandung.csv"))
 option_station <- unique(udara_bandung[["station"]])
-___ <- colnames(udara_bandung)[-c(1, 2)]
+option_parameter <- colnames(udara_bandung)[-c(1, 15)]
 ```
 
 **`ui`**
@@ -50,19 +50,26 @@ Berikutnya kita akan menuliskan kode antarmuka (*front-end*/*user interface*) pa
 ```{r ui}
 ui <- fluidPage(
   title = "Air Quality | R Academy Telkom University",
-  headerPanel("___"),
+  theme = "flatly", 
+  headerPanel("Air Quality of Kota bandung"),
   sidebarLayout(
     sidebarPanel(
       selectInput(inputId = "station",
-                  label =  "Station",
+                  label =  "Nema of Station",
                   choices = option_station,
                   multiple = TRUE,
                   selected = option_station[[1]]),
-      ___
+      selectInput(inputId = "parameter",
+                  label = "Parameter",
+                  choices = option_parameter,
+                  multiple = FALSE,
+                  selected = option_parameter[[1]]),
       textInput(inputId = "parameter_label",
                 label = "Label for parameter",
                 value = ""),
-      ___
+      textInput(inputId = "plot_title",
+                label = "Plot title",
+                value = "Air Quality in Bandung")
     ),
     mainPanel(
       plotlyOutput(outputId = "aq_plot")
@@ -79,20 +86,21 @@ Selanjutnya kita perlu menuliskan kode logika aplikasi yang dieksekusi oleh apli
 server <- function(input, output, session) {
   aq_plot <- reactive({
     udara_bandung %>%
-      filter(station %in% input$station) %>%
-      ggplot(aes_string(x = "day", y = ___, colour = "station")) +
-      geom____ +
+      dplyr::filter(station %in% input$station) %>%
+      ggplot(aes_string(x = "day", y = input$parameter, colour = "station")) +
+      geom_line() +
+      geom_line() +
       scale_x_date(date_breaks = "2 weeks") +
       labs(
         x = "",
         y = ifelse(input$parameter_label == "", input$parameter, input$parameter_label),
         colour = "Station",
-        title = input$___
+        title = input$plot_title
       ) +
       theme_light()
   })
   
-  output$___ <- renderPlotly({
+  output$aq_plot <- renderPlotly({
     ggplotly(aq_plot())
   })
 }

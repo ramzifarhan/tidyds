@@ -169,7 +169,7 @@ Anda juga dapat membuat visualisasi untuk `sherlock_gamma` seperti ditunjukan pa
 
 ```{r}
 sherlock_gamma %>% 
-  ggplot(aes(x = rev(story), y = gamma, fill = as.character(topic))) +
+  ggplot(aes(x = story, y = gamma, fill = as.character(topic))) +
   geom_col() +
   coord_flip()
 ```

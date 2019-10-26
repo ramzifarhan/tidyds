@@ -213,6 +213,14 @@ un_smp_rf %>%
   bind_cols(un_smp_testing) %>% 
   metrics(truth = ipa, estimate = .pred)
 ```
+```{r}
+save(un_smp_recipe, file = here("data", "un_smp_recipe.rda"),
+     compress = "bzip2", compression_level = 9)
+save(un_smp_lm, file = here("data", "un_smp_lm.rda"), compress = 
+       "bzip2", compression_level = 9)
+save(un_smp_rf, file = here("data", "un_smp_rf.rda"), compress = 
+       "bzip2", compression_level = 9)
+```
 
 Kesimpulan apa yang dapat Anda ambil berdasarkan hasil diatas?
 
