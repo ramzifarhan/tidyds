@@ -27,6 +27,11 @@ library(vroom)
 library(here)
 library(tidymodels)
 ```
+```{r}
+?purrr
+?recipes
+?tibble
+```
 
 Dalam studi kasus ini kita akan melakukan pemodelan dan prediksi untuk nilai ujian nasional tingkat SMP di Kota Bandung. Imporlah "un_smp.csv" yang berada dalam subdirektori "data-raw" dan simpan sebagai obyek R bernama `un_smp`. Selanjutnya jalankan fungsi `glimpse()` pada `un_smp` untuk mempelajari stryrukturnya! (Catatan: `glimpse()` adalah fungsi dari paket `dplyr` yang serupa dengan fungsi `str()`)
 
@@ -59,6 +64,9 @@ un_smp %>%
     caption = "Sumber: Open Data Kota Bandung"
   ) +
   theme_light()
+t.test(ipa ~ status, data = un_smp) %>%
+tidy()
+
 ```
 
 Grafik di atas menunjukan kemungkinan adanya pengaruh dari status sekolah terhadap nilai ujian IPA. Sekarang buatlah grafik yang serupa untuk mempelajari kemungkinan pengaruh dari tahun ujian! Apa informasi yang dapat Anda ambil?
@@ -77,7 +85,29 @@ un_smp %>%
     caption = "Sumber: Open Data Kota Bandung"
   ) +
   theme_light()
+
 ```
+```{r}
+un_smp %>% 
+  group_by(status, tahun) %>% 
+  summarise(ipa = mean(ipa)) %>% 
+  ungroup() %>%
+  ggplot(aes(x = status, y = ipa)) +
+  geom_col() + 
+  labs(
+    x = "tahun ujian",
+    y = "Rerata nilai ujian IPA",
+    title = "SMP Negeri vs SMP Swasta",
+    subtitle = "Ujian Nasional SMP di Kota Bandung 2015-2019",
+    caption = "Sumber: Open Data Kota Bandung"
+  ) +
+  facet_wrap(~tahun) +
+  theme_light()
+fit2 <- aov(ipa ~ tahun + status + tahun:status, data = un_smp)
+anova(fit2)
+
+```
+
 
 Sekarang kita akan melakukan tahap pertama dari pembelajaran mesin, yaitu membagi data yang kita miliki ke dalam dua kelompok. Kelompok pertama disebut `training` yang akan digunakan untuk membuat pemodelan. Sedangkan kelompok kedua disebut `testing` yang akan digunakan untuk menguji performa model yang kita buat. Fungsi `initial_split()` dari paket `rsample` akan digunakan untuk melakukan hal tersebut. Berapakah komposisi `training` terhadap `testing` bawaan pada fungsi tersebut? (Petunjuk: `?initial_split`)
 
@@ -85,8 +115,8 @@ Sekarang kita akan melakukan tahap pertama dari pembelajaran mesin, yaitu membag
 set.seed(270719)
 un_smp_split <- initial_split(un_smp)
 un_smp_split
+un_smp_split$in_id
 ```
-
 `un_smp_split` di atas berupakan obyek R yang memiliki metadata atau informasi baris mana dari data `un_smp` yang akan digunakan sebagai `training` dan `testing`. Anda dapat mengakses data `training` dengan cara menjalankan fungsi `training()` pada `un_smp_split`. Menurut Anda fungsi apakah yang akan digunakan untuk mengakses data `testing`? Coba buatlah baris kode untuk itu!
 
 **data `training`**
@@ -124,18 +154,25 @@ un_smp_training <- un_smp_recipe %>%
   prep() %>% 
   bake(training(un_smp_split))
 un_smp_training
+glimpse(un_smp_training)
 
 un_smp_testing <- un_smp_recipe %>% 
   prep() %>% 
   bake(testing(un_smp_split))
 un_smp_testing
+glimpse(un_smp_testing)
 ```
+bahasa inggris sudah menghilang  di tahap training dan testing karena dianggap korelasinya tinggi dengan yang lain sehingga tidak dibutuhkan lagi 
+
 
 Setelah Anda membagi data awal menjadi dua `training` dan `testing` serta menerapkan "resep" pra-pengolahan pada keduanya, sekarang saatnya Anda melakukan pemodelan. Dalam studi kasus ini Anda akan menggunakan dua model, yaitu Linear Regression dan Random Forest.
 
 Seperti telah disinggung sebelumnya bahwa terdapat banyak paket untuk melakukan pemodelan sehingga terkadang menyulitkan pengguna. Oleh karena itu kita akan menggunakan paket `parsnip` yang memiliki misi untuk membuat antarmuka sama meskipun "mesin" berbeda. Manfaatnya adalah kita dapat dengan mudah menuliskan kode dan mengganti paket yang mengimplementasi model. *A single front-end for various choices of back-end*. Menarik bukan?
 
 Pertama kita akan membuat model regresi sebagai berikut:
+
+nama sekolah tidak diikutkan karena termasuk id
+ipa~. artinya = ipa prediksi dengan semuanya
 
 ```{r}
 un_smp_lm <- linear_reg(mode = "regression") %>% 
@@ -154,6 +191,11 @@ un_smp_lm %>%
 ```
 
 Kesimpulan apa yang dapat Anda ambil berdasarkan hasil diatas?
+
+rsq (rsquare) skala 0-1
+rmse dan mae selisih nilai prediksi dengan nilai real
+rmse sensitif terhadap error yang besar
+mae lebih stabil
 
 Sekarang buatlah pemodelan dan pengujian performa seperti di atas namun menggunakan Random Forest! (Petunjuk: fungsi `rand_forest()` dan "mesin" adalah "ranger")
 
